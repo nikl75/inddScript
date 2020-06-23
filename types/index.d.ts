@@ -90404,7 +90404,7 @@ declare class XMLElement extends XMLItem {
    * @param using The XPath expression.
    * @param prefixMappingTable The namespace mapping table. Can accept: Array of Arrays of 2 Strings.
    */
-  evaluateXPathExpression(using: string, prefixMappingTable: any[]): XMLItem[]
+  evaluateXPathExpression(using: string, prefixMappingTable?: any[]): XMLItem[]
 
   /**
    * Exports the object(s) to a file.
