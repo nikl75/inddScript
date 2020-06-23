@@ -4,7 +4,7 @@ function main() {
     app.activeDocument.allGraphics
 
 
-    var doc = app.properties.activeDocument,
+    var doc = app.activeDocument,
         text,
         xt,
         xe,
@@ -12,9 +12,9 @@ function main() {
 
     if (!doc) return;
     xt = doc.xmlTags.itemByName("emphasis");
-    if (!xt.isValid) { xt = doc.xmlTags.add({ name: "emphasis" }); }
-    text = app.selection;
-    if (text.length != 1 || (!text[0].properties.baseline)) {
+    if (!xt.isValid) { xt = doc.xmlTags.add("emphasis" ); }
+    text = doc.selection;
+    if (text != 1 || (!text[0].properties.baseline)) {
         alert("You need to select some text…");
         return;
     }
