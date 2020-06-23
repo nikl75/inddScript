@@ -6,15 +6,16 @@
 main();
 
 function main(){
-	//Make certain that user interaction (display of dialogs, etc.) is turned on.
-	app.scriptPreferences.userInteractionLevel = UserInteractionLevels.interactWithAll;
-	var myObjectList = new Array;
-	if(app.documents.length != 0){
-		tellme();
+	var _dok = app.activeDocument;
+	var _rootXML = _dok.xmlElements[0];
 
-	}
 	
+	_rootXML.xmlElements.item(1).xmlAttributes.add("example_attribute", "This is an XML attribute. It will not appear in the layout!");
+
+
+	display(_rootXML[1]);
 }
 
 function display(mCon){
+	alert(mCon);
 }
