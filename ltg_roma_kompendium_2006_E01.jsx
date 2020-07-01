@@ -4,14 +4,17 @@
 //
 
 var tTime = new Date();
+var dok = app.activeDocument;
+var tDocName = dok.name;
 
 main();
 
 function main() {
-	var dok = app.activeDocument;
 	var rootXML = dok.xmlElements[0];
-	var tElementCount = 0;
-
+	var tElementCountGUID = 0;
+	var tElementCountIS = 0;
+	var tElementCountIT = 0;
+	var tOVERWRITE = 0;
 
 	var tItems = rootXML.evaluateXPathExpression("//*");
 	// var tItems = rootXML.evaluateXPathExpression("//B02_Abschnitt");
@@ -24,11 +27,30 @@ function main() {
 		if (!tItem.xmlAttributes.itemByName("GUID").isValid) {
 			var tGUID = buildGUID();
 			tItem.xmlAttributes.add("GUID", tGUID);
-			// pop(tItem.isValid);
-			tElementCount++;
+			tElementCountGUID++;
+		}
+		// } else if (tItem.xmlAttributes.itemByName("GUID").isValid && tOVERWRITE){
+		// 	var tGUID = buildGUID();
+		// 	tItem.xmlAttributes.item("GUID").value = tGUID;
+		// 	tElementCountGUID++;
+		// }
+		if (!tItem.xmlAttributes.itemByName("indesign-source").isValid) {
+			tItem.xmlAttributes.add("indesign-source", tDocName)
+			tElementCountIS++;
+		} else if (tItem.xmlAttributes.itemByName("indesign-source").isValid){
+			tItem.xmlAttributes.item("indesign-source").value = tDocName;
+			tElementCountIS++;
+		}
+		if (!tItem.xmlAttributes.itemByName("indesign-timestamp").isValid) {
+			tItem.xmlAttributes.add("indesign-timestamp", buildTIMESTAMP());
+			tElementCountIT++;
+		} else if (tItem.xmlAttributes.itemByName("indesign-timestamp").isValid && tOVERWRITE){
+			tItem.xmlAttributes.item("indesign-timestamp").value = buildTIMESTAMP();
+			tElementCountIT++;
+
 		}
 	}
-	pop(tElementCount + " Elemente geändert");
+	pop(tElementCountGUID + " GUID\n" + tElementCountIS + " Indesign-Source\n" +tElementCountIT + " Indesign-Timestamp");
 }
 
 function pop(mCon) {
@@ -36,15 +58,11 @@ function pop(mCon) {
 }
 
 function buildGUID(){
-	/* in die GUID noch teile des Dateinamen einfügen
-	 * dient der Versionierung und das GUID dokument-übergreifend nicht 
-	 * doppelt vergeben werden können 
-	 */
-	 var tGUID = "GUID_roma_kompendium_" + "DATEINAME" + "_" +  + tTime.getTime() + "_" + getRandomInt(100000);
-
-		return tGUID;
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
 }
-
-function getRandomInt(max) {
-  return Math.floor(Math.random() * Math.floor(max));
+function buildTIMESTAMP(){
+	return tTime.getTime().toString();
 }
