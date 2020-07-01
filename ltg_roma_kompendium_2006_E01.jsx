@@ -23,6 +23,11 @@ function main() {
 
 	for (var i = 0; i < tItems.length; i++) {
 		var tItem = tItems[i];
+		/*
+		 * folgende Tags sollen die attribute nicht bekommen:  
+		 * <IN_Text_Link>, <IN_Text_Liste_Bullet>, <IN_Text_Liste_Num>
+		 * siehe mail sascha klammt vom 200701
+		 */
 
 		if (!tItem.xmlAttributes.itemByName("GUID").isValid) {
 			var tGUID = buildGUID();
@@ -41,6 +46,7 @@ function main() {
 			tItem.xmlAttributes.item("indesign-source").value = tDocName;
 			tElementCountIS++;
 		}
+
 		if (!tItem.xmlAttributes.itemByName("indesign-timestamp").isValid) {
 			tItem.xmlAttributes.add("indesign-timestamp", buildTIMESTAMP());
 			tElementCountIT++;
